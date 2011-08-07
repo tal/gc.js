@@ -1,0 +1,58 @@
+#simple_overlay {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0.7;
+  filter: alpha(opacity = 70);
+  background: black;
+  z-index: 999; }
+.ie6 #simple_overlay {
+  position: absolute;
+  height: 1000px; }
+
+#simple_popups {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow-x: hidden; }
+  #simple_popups.active {
+    overflow-y: scroll;
+    height: 100%; }
+.ie6 #simple_popups {
+  position: absolute; }
+  .ie6 #simple_popups.active {
+    height: 1000px; }
+
+.simple_popup {
+  border: 3px solid transparent;
+  -webkit-box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.4);
+     -moz-box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.4);
+          box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.4);
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+  color: #3f3f3f;
+  position: relative;
+  margin: 0 auto;
+  text-align: left;
+  top: 100px; }
+  .simple_popup .container {
+    border: 1px solid #68625f;
+    position: relative;
+    padding: 20px 15px;
+    background-color: white; }
+  .simple_popup .close {
+    width: 41px;
+    height: 42px;
+    background: url(/images/button-close.png);
+    position: absolute;
+    top: -21px;
+    right: -21px;
+    text-indent: -9999px;
+    border-width: 0;
+    text-decoration: none;
+    display: block; }

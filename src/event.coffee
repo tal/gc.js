@@ -14,11 +14,24 @@ class Tal.Event extends Array
   
   fire: (args...) ->
     this.fire_args = args;
-    func(args...) for func in this
+    succ = true
+    for func in this
+      ret = func(args...)
+      succ = ret if ret is false
+      
     if this.once
-      this.push = (args...) =>
-        arg(this.fire_args) for arg in args
-        Array::push.apply(this,args)
+      this.push = this._fire_the_args
+    
+    succ
   
-  fire: ->
+  _fire_the_args: (args...) ->
+    succ = true
+    for arg in args
+      ret = arg(this.fire_args...)
+      succ = ret if ret is false
+      
+    Array::push.apply(this,args)
+    succ
+  
+  bind: ->
     this.push(arguments...)
