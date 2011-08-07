@@ -2,12 +2,12 @@ require 'coffee-script'
 require 'uglifier'
 class Taljs < Thor
   include Thor::Actions
-  DIR = "/Users/tatlas/Projects/tal.js"
+  DIR = File.dirname(__FILE__)
   
   desc "compile", "compiles tal.js to the current directory"
   method_option :min, :type => :boolean, :default => false, :desc => "minify the output"
   method_option :version, :type => :boolean, :default => false, :desc => "include version in output"
-  def compile
+  def compile(target_dir = '.')
     js = []
     coffee = []
     base = "tal"
@@ -27,9 +27,9 @@ class Taljs < Thor
     
     js << CoffeeScript.compile(coffee.join("\n"))
     
-    create_file "#{base}.js", js.join("\n"), :verbose => false
+    create_file File.join(target_dir,"#{base}.js"), js.join("\n")
     if options.min?
-      create_file "#{base}.min.js", Uglifier.compile(js.join("\n")), :verbose => false
+      create_file File.join(target_dir,"#{base}.min.js"), Uglifier.compile(js.join("\n"))
     end
   end
   

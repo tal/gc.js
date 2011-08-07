@@ -23,11 +23,13 @@ class Tal.Popup
   @find = {}
   @s = []
   constructor: (args) ->
+    if args instanceof Popup
+      return args
+    @name = args?.name
     @args = $.extend {}, Popup.defaults, args
     @el = $(Popup.structure)
     @el.width(@args.width)
-    if @args.name
-      @name = @args.name
+    if @name
       if Popup.find[@name]
         console.error("There's already a popup of name #{@name}") if Tal.log
         return Popup.find[@name]
