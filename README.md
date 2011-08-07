@@ -1,8 +1,11 @@
 # tal.js
 
-### Events
+Check the downloads button on [the github](http://github.com/talby/tal.js#download_button) for a compiled version of tal.js
+or compile it yourself by running `thor taljs:compile`
 
-For basic event fireing
+## Events
+
+### Basic event firing
 
     obj = {};
     obj.onClick = new Tal.event();
@@ -14,7 +17,10 @@ For basic event fireing
     // => omg I was clicked by a nice guy
     // => omg I was touched by a nice guy
 
-If you want the event to be a wait, ie the event is probably only fired once
+### Onetime firing
+
+If you want the event to be a wait, ie the event is probably only fired once and any other
+additions will be fired immediately upon binding
 
     obj = {};
     obj.onClick = new Tal.event({once: true});
@@ -28,3 +34,13 @@ If you want the event to be a wait, ie the event is probably only fired once
     // => omg I was touched by a nice guy
     obj.onClick.bind(function(a) {console.log("omg I was seen "+a)});
     // => omg I was seen by a nice guy
+
+## Popups
+
+    popup = new Tal.Popup({
+      width: 220,
+      name: "mytest_popup",
+      html: "This goes in the body of my popup"
+    });
+    
+    popup.show();
