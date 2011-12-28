@@ -22,10 +22,11 @@ class Tal.Popup
     </div>"""
   @find = {}
   @s = []
+  i = 1
   constructor: (args) ->
     if args instanceof Popup
       return args
-    @name = args?.name
+    @name = args?.name || i++
     @args = $.extend {}, Popup.defaults, args
     @el = $(Popup.structure)
     @el.width(@args.width)
@@ -34,18 +35,23 @@ class Tal.Popup
         console.error("There's already a popup of name #{@name}") if Tal.log
         return Popup.find[@name]
       Popup.find[@name] = this
-      @el.attr('id',"#{@name}_simple_popup")
-  
+      @el.attr('id',"tal_popup#{@name}")
+    
+    # warm up events
+    for name in ['complete','show','x','close']
+      @getEvent(name)
+      @getEvent(name).push(@args['on'+name]) if @args['on'+name]
+    
     @active = false
-  
+    
     @body = $("<div class='content'></div>")
     @el.find('.container').append @body
     
-    @close_button = @el.find('.close').click (e) =>
+    @close_button = @el.delegate '.close', 'click', (e) =>
       e.preventDefault()
       @x(e)
   
-    @button = @el.find('.button').click (e) =>
+    @button = @el.delegate '.button','click', (e) =>
       e.preventDefault()
       @complete(e)
   
@@ -61,14 +67,13 @@ class Tal.Popup
     Popup.$overlay.fadeOut @args.overlaySpeed, @afterHideOverlay
   
   afterHideOverlay: =>
-    if @args.lock
-      $body.css overflow:'', 'padding-right': ''
+    $body.css overflow:'', 'padding-right': ''
     Popup.$popups.removeClass('active')
   
   showOverlay: ->
-    origWidth = $body.width()
-    $o = Popup.$overlay.filter(':hidden')
     if @args.lock
+      origWidth = $body.width()
+      $o = Popup.$overlay.filter(':hidden')
       $o.show()
       $body.css overflow:'hidden'
       $body.css 'padding-right': $body.width()-origWidth
@@ -76,33 +81,33 @@ class Tal.Popup
         $o.fadeTo(@args.overlaySpeed,@args.overlayOpacity)
     Popup.$popups.addClass('active')
   
+  getEvent: (eventName) ->
+    return unless Tal.popupEvent?
+    this["on"+eventName] ||= if @name?
+      Tal.popupEvent(@name,eventName)
+    else
+      new Tal.Event()
+  
   fireEvents: (eventName) ->
     succ = true
-    if @name?
-      if optimizely?
-        optimizely.trackEvent("popup_#{@name}_event_#{eventName}")
-      if Tal.popupEvent?
-        succ = Tal.popupEvent(@name,eventName).fire(this,eventName)
+    if optimizely? and @name?
+      optimizely.trackEvent("popup_#{@name}_event_#{eventName}")
     
     if Tal.popupEvent?
+      succ = @getEvent(eventName).fire(this,eventName)
       Tal.popupEvent("all",eventName).fire(this,eventName)
     
-    if _gaq?
-      _gaq.push(['_trackEvent', 'tal_popups', eventName, @name])
+    _gaq?.push(['_trackEvent', 'tal_popups', eventName, @name])
+    
     succ
   
   show: (args...) ->
     @fireEvents('show')
     @close_button.hide() if @args.noClose
-    if _.isString(args[0])
-      animationName = args.shift()
-    else
-      animationName = @args.openAnimation
     
-    if _.isFunction(args[0])
-      callback = args.shift()
-    else
-      callback = ->
+    animationName = if Tal.isString(args[0]) then args.shift() else @args.openAnimation
+    callback = if Tal.isFunction(args[0]) then args.shift() else ->
+      
     
     if Popup._active
       Popup._active.close(true)
@@ -110,7 +115,7 @@ class Tal.Popup
       @showOverlay()
     
     try
-      if Tal.Popup.animations? && Tal.Popup.animations.open[animationName]
+      if Tal.Popup.animations?.open[animationName]
         Tal.Popup.animations.open[animationName](@el,@args,callback)
       else
         @el.show()
@@ -140,8 +145,8 @@ class Tal.Popup
     else
       @hideOverlay()
 
-    animationName = if _.isString(args[0]) then args.shift() else @args.closeAnimation
-    callback = if _.isFunction(args[0]) then args.shift() else ->
+    animationName = if Tal.isString(args[0]) then args.shift() else @args.closeAnimation
+    callback = if Tal.isFunction(args[0]) then args.shift() else ->
 
     try
       if Tal.Popup.animations? && Tal.Popup.animations.close[animationName]

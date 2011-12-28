@@ -5,4 +5,7 @@ window.Tal = new function Tal() {
   this.isFunction = function(obj) {
     return !!(obj && obj.constructor && obj.call && obj.apply);
   };
+  this.isString = function(obj) {
+    return !!(obj === '' || (obj && obj.charCodeAt && obj.substr));
+  };
 };

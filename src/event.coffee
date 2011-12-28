@@ -1,3 +1,5 @@
+foo(args...)
+
 class Tal.Event extends Array
   constructor: (args...) ->
     this[key] = value for key,value of Event.defaults
@@ -7,18 +9,22 @@ class Tal.Event extends Array
       arr = func
       this.push for func in arr
     
+    this.fired = false;
+    
     if opts = args.pop()
       this[key] = value for key,value of opts
   
   @defaults = {};
   
-  fire: (args...) ->
+  fire: (args...) =>
     this.fire_args = args;
     succ = true
     for func in this
       ret = func(args...)
       succ = ret if ret is false
-      
+    
+    this.fired = true;
+    
     if this.once
       this.push = this._fire_the_args
     

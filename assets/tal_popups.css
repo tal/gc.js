@@ -1,4 +1,4 @@
-#simple_overlay {
+#tal_popup_overlay {
   width: 100%;
   height: 100%;
   position: fixed;
@@ -12,19 +12,19 @@
   position: absolute;
   height: 1000px; }
 
-#simple_popups {
+#tal_popups {
   z-index: 1000;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   overflow-x: hidden; }
-  #simple_popups.active {
+  #tal_popups.active {
     overflow-y: scroll;
     height: 100%; }
-.ie6 #simple_popups {
+.ie6 #tal_popups {
   position: absolute; }
-  .ie6 #simple_popups.active {
+  .ie6 #tal_popups.active {
     height: 1000px; }
 
 .simple_popup {
