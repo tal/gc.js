@@ -1,11 +1,11 @@
 foo(args...)
 
-class Tal.Event extends Array
+class GC.Event extends Array
   constructor: (args...) ->
     this[key] = value for key,value of Event.defaults
-    while func = args.pop() && Tal.isFunction(func)
+    while func = args.pop() && GC.isFunction(func)
       this.unshift(func)
-    if Tal.isArray(func)
+    if GC.isArray(func)
       arr = func
       this.push for func in arr
     

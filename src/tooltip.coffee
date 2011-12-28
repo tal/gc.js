@@ -1,4 +1,4 @@
-class Tal.Tooltip
+class GC.Tooltip
   constructor: (@el,args) ->
     if @el.size?()
       @$el = @el

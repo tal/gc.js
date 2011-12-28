@@ -1,4 +1,4 @@
-class Tal.PopupGroup extends Array
+class GC.PopupGroup extends Array
   @defaults: 
     nextAnimation: 'slide'
     showAnimation: 'shrink'
@@ -6,11 +6,11 @@ class Tal.PopupGroup extends Array
   constructor: (args...) ->
     @name = args[0]?.name
     popup = args.pop()
-    while popup instanceof Tal.Popup
+    while popup instanceof GC.Popup
       @add(popup)
       popup = args.pop()
     
-    if Tal.isArray(popup)
+    if GC.isArray(popup)
       @add(popup...)
       popup = args.pop()
     
@@ -19,7 +19,7 @@ class Tal.PopupGroup extends Array
   
   add: (args...) ->
     for popup in args
-      popup = new Tal.Popup(popup)
+      popup = new GC.Popup(popup)
       popup.group = this
       Array::push.call(this,popup)
     unless @current?
@@ -30,7 +30,7 @@ class Tal.PopupGroup extends Array
   
   shift: (args...) ->
     for popup in args
-      popup = new Tal.Popup(popup)
+      popup = new GC.Popup(popup)
       popup.group = this
       Array::shift.call(this,popup)
     unless @current?

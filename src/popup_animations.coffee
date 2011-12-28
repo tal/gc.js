@@ -1,4 +1,4 @@
-Tal.Popup.animations =
+GC.Popup.animations =
   open:
     drop: (el, args, callback) ->
       speed = args.openSpeed
@@ -17,9 +17,9 @@ Tal.Popup.animations =
     slide: (el, args, callback) ->
       speed = args.openSpeed
 
-      left = (Tal.Popup.$popups.width()-el.width())/2
+      left = (GC.Popup.$popups.width()-el.width())/2
 
-      el.css margin: 0, left: (el.width() + Tal.Popup.$popups.width()), position: 'absolute'
+      el.css margin: 0, left: (el.width() + GC.Popup.$popups.width()), position: 'absolute'
       el.show()
       el.animate {left: left}, speed, ->
         el.css margin: '0 auto', left: 0, position: ''

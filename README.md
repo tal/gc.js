@@ -7,12 +7,12 @@ or compile it yourself by running `thor taljs:compile`
 
 Generate by
 
-    new Tal.Event([{options}],[funciton,...])
+    new GC.Event([{options}],[funciton,...])
 
 ### Basic event firing
 
     obj = {};
-    obj.onClick = new Tal.event();
+    obj.onClick = new GC.event();
     obj.onClick.bind(function(a) {console.log("omg I was clicked "+a)});
     obj.onClick.fire("by a madman");
     // => omg I was clicked by a madman
@@ -27,7 +27,7 @@ If you want the event to be a wait, ie the event is probably only fired once and
 additions will be fired immediately upon binding
 
     obj = {};
-    obj.onClick = new Tal.event({once: true});
+    obj.onClick = new GC.event({once: true});
     obj.onClick.bind(function(a) {console.log("omg I was clicked "+a)});
     obj.onClick.fire("by a madman");
     // => omg I was clicked by a madman
@@ -44,7 +44,7 @@ additions will be fired immediately upon binding
 To get a basic popup going you can do this (name is an optional but recommended
 field):
 
-    popup = new Tal.Popup({
+    popup = new GC.Popup({
       width: 220,
       name: "mytest_popup",
       html: "This goes in the body of my popup"

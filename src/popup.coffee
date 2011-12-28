@@ -1,4 +1,4 @@
-class Tal.Popup
+class GC.Popup
   @defaults:
     width: 774
     overlayOpacity: 0.7
@@ -32,7 +32,7 @@ class Tal.Popup
     @el.width(@args.width)
     if @name
       if Popup.find[@name]
-        console.error("There's already a popup of name #{@name}") if Tal.log
+        console.error("There's already a popup of name #{@name}") if GC.log
         return Popup.find[@name]
       Popup.find[@name] = this
       @el.attr('id',"tal_popup#{@name}")
@@ -82,20 +82,20 @@ class Tal.Popup
     Popup.$popups.addClass('active')
   
   getEvent: (eventName) ->
-    return unless Tal.popupEvent?
+    return unless GC.popupEvent?
     this["on"+eventName] ||= if @name?
-      Tal.popupEvent(@name,eventName)
+      GC.popupEvent(@name,eventName)
     else
-      new Tal.Event()
+      new GC.Event()
   
   fireEvents: (eventName) ->
     succ = true
     if optimizely? and @name?
       optimizely.trackEvent("popup_#{@name}_event_#{eventName}")
     
-    if Tal.popupEvent?
+    if GC.popupEvent?
       succ = @getEvent(eventName).fire(this,eventName)
-      Tal.popupEvent("all",eventName).fire(this,eventName)
+      GC.popupEvent("all",eventName).fire(this,eventName)
     
     _gaq?.push(['_trackEvent', 'tal_popups', eventName, @name])
     
@@ -105,8 +105,8 @@ class Tal.Popup
     @fireEvents('show')
     @close_button.hide() if @args.noClose
     
-    animationName = if Tal.isString(args[0]) then args.shift() else @args.openAnimation
-    callback = if Tal.isFunction(args[0]) then args.shift() else ->
+    animationName = if GC.isString(args[0]) then args.shift() else @args.openAnimation
+    callback = if GC.isFunction(args[0]) then args.shift() else ->
       
     
     if Popup._active
@@ -115,13 +115,13 @@ class Tal.Popup
       @showOverlay()
     
     try
-      if Tal.Popup.animations?.open[animationName]
-        Tal.Popup.animations.open[animationName](@el,@args,callback)
+      if GC.Popup.animations?.open[animationName]
+        GC.Popup.animations.open[animationName](@el,@args,callback)
       else
         @el.show()
         callback()
     catch error
-      console.error(error) if Tal.log
+      console.error(error) if GC.log
       @el.show()
       callback()
     
@@ -145,17 +145,17 @@ class Tal.Popup
     else
       @hideOverlay()
 
-    animationName = if Tal.isString(args[0]) then args.shift() else @args.closeAnimation
-    callback = if Tal.isFunction(args[0]) then args.shift() else ->
+    animationName = if GC.isString(args[0]) then args.shift() else @args.closeAnimation
+    callback = if GC.isFunction(args[0]) then args.shift() else ->
 
     try
-      if Tal.Popup.animations? && Tal.Popup.animations.close[animationName]
-        Tal.Popup.animations.close[animationName](@el,@args,callback)
+      if GC.Popup.animations? && GC.Popup.animations.close[animationName]
+        GC.Popup.animations.close[animationName](@el,@args,callback)
       else
         @el.hide()
         callback()
     catch error
-      console.error(error) if Tal.log
+      console.error(error) if GC.log
       @el.hide()
       callback()
 

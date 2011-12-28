@@ -1,4 +1,6 @@
-window.Tal = new function Tal() {
+if (!window.GC) window.GC = new (function GC() {})();
+
+(function() {
   this.isArray = Array.isArray || function(obj) {
     return toString.call(obj) === '[object Array]';
   };
@@ -8,4 +10,4 @@ window.Tal = new function Tal() {
   this.isString = function(obj) {
     return !!(obj === '' || (obj && obj.charCodeAt && obj.substr));
   };
-};
+}).call(GC);

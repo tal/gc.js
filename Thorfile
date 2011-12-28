@@ -1,6 +1,6 @@
 require 'coffee-script'
 require 'uglifier'
-class Taljs < Thor
+class Gcjs < Thor
   include Thor::Actions
   DIR = File.dirname(__FILE__)
   
@@ -10,7 +10,7 @@ class Taljs < Thor
   def compile(target_dir = '.')
     js = []
     coffee = []
-    base = "tal"
+    base = "gc"
     
     Dir.chdir(DIR) do
       js << File.read('src/base.js')
